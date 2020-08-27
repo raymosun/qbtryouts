@@ -11,4 +11,5 @@ module.exports = () => {
         process.env.CONFIG_SHEET_ID = credFile.config_sheet_id;
         process.env.OUTPUT_SHEET_ID = credFile.output_sheet_id;
     }
+    process.env.GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/gm, '\n');
 }
