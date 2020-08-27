@@ -93,7 +93,7 @@ function syncTimer(timeElapsed,duration,endFunction,countUp=false){
 }
 
 async function updateTimer(duration,endFunction,countUp=false,startTime=Date.now(),currentTime=startTime){
-    if (cancelled) return;
+    if (cancelled) return cancelled = false;
     const timeLeft = Math.max(duration-(currentTime-startTime), 0);
 
     var minutes = Math.floor(timeLeft/1000/60);

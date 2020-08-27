@@ -261,6 +261,7 @@ function handleCommand(command){
             if (status === 'starting soon...'){
                 ioTryouts.emit('cancel');
                 updateStatus('not started');
+                clearInterval(sleeper);
                 sendAdminMessage('info','cancelled.');
             }
             else cancelled = true;
@@ -336,8 +337,11 @@ async function askQuestion(questionIndex){
     });
 }
 
+var sleeper;
 async function sleep(time){
-    return new Promise(res => { setTimeout(res,time); });
+    return new Promise(res => {
+        sleeper = setTimeout(res,time);
+    });
 }
 
 function resetAnswers(){
