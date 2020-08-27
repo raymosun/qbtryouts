@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" integrity="sha512-EZLkOqwILORob+p0BXZc+Vm3RgJBOe1Iq/0fiI7r/wJgzOFZMlsqTa29UEl6v6U6gsV4uIpsNZoV32YZqrCRCQ==" crossorigin="anonymous" />
+    <title>Academic League Tryouts</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha512-v8ng/uGxkge3d1IJuEo6dJP8JViyvms0cly9pnbfRxT6/31c3dRWxIiwGnMSWwZjHKOuY3EVmijs7k1jz/9bLA==" crossorigin="anonymous"></script>
+    <script src="tryoutsDisp.js" defer></script>
+    <script src="tryoutsInput.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="/tryouts.css">
+    <link rel="stylesheet" type="text/css" href="/tryoutsDisp.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="title">tryouts</h1>
+            <p class="userinfo"></p>
+        </header>
+        <h4>Status: <span class="status"></span></h4>
+        <div class=timer>
+            <p class="time">
+                <span class=main-time>0:00</span><span class="deciseconds">.0</span>
+            </p>
+            <div class="loading-bar-background">
+                <div class="loading-bar"></div>
+            </div>
+        </div>
+        <h5 class="question"><span class="noquestion"><em>question</em></span></h5>
+        
+        <form spellcheck="false">
+            <div class="form-group">
+                <label for="answer">Answer:</label>
+                <input type="text" placeholder="answer" name="answer" id="answer" disabled>
+            </div>
+        </form>
+        <hr>
+        <ul>
+            <li><strong>your answer will be submitted automatically when time runs out</strong></li>
+            <li><strong>spelling and capitalization don't count</strong> (as long as we can tell you know the answer)</li>
+            <li><strong>only last names are required</strong> (Abraham Lincoln can be "Lincoln", William Shakespeare can be "Shakespeare")</li>
+            <li><strong>unless multiple people with that name are well known</strong> (you must write "Theodore Roosevelt" or "Teddy Roosevelt" to avoid confusion with Franklin D. Roosevelt)</li>
+            <li><strong>monarchs must be named with their number or epithet if they have one</strong> (Queen Elizabeth II, Ivan the Terrible)</li>
+        </ul>
+        <hr>
+        <div class="confirmations"></div>
+    </div>
+</body>
+</html>

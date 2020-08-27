@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"
+        integrity="sha512-EZLkOqwILORob+p0BXZc+Vm3RgJBOe1Iq/0fiI7r/wJgzOFZMlsqTa29UEl6v6U6gsV4uIpsNZoV32YZqrCRCQ=="
+        crossorigin="anonymous" />
+    <title>Admin Console</title>
+    <link rel="stylesheet" type="text/css" href="/tryoutsDisp.css">
+    <style>
+        .message {
+            margin: 0;
+            padding: 5px;
+        }
+        .message-echo {
+            background-color: #e5e5e5;
+        }
+        .message-err {
+            color: red;
+        }
+        input {
+            margin-top: 10px;
+            width: 100%;
+        }
+        .list {
+            background-color: #fcfcfc;
+            overflow-y: auto;
+            border-style: solid;
+            border-color: #eeeeee;
+            border-width: 2px;
+        }
+        .output {
+            height: 75vh;
+        }
+        .invalid {
+            display: none;
+            background-color: pink;
+            color: red;
+            text-align: center;
+        }
+        .info {
+            background-color: #fcfcfc;
+            border-style: solid;
+            border-color: #eeeeee;
+            border-width: 2px;
+            padding: 5px;
+        }
+        h5 {
+            margin: 0;
+        }
+        .message-time {
+            color: #888888;
+            margin-right: 20px;
+        }
+        .answers {
+            max-height: 45vh;
+        }
+        .answer:nth-child(even) {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">tryouts - Admin Console</h1>
+        <h3 class="invalid">Not Authenticated!</h3>
+        <div class="bar">
+            <div class="sidebar three columns">
+                <h5>Status:</h5>
+                <h5 class="info status"></h5>
+                <div class=display>
+                    <p class="time">
+                        <span class="main-time">0:00</span><span class="deciseconds">.0</span>
+                    </p>
+                    <div class="loading-bar-background">
+                        <div class="loading-bar"></div>
+                    </div>
+                    <h5 class="question"><span class="noquestion"><em>question</em></span></h5>
+                </div>
+                <h5>Answers</h5>
+                <div class="answers list">
+
+                </div>
+            </div>
+            <div class="console nine columns">
+                <div class="output list"></div>
+                <form>
+                    <input type="text" name="command">
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
+    integrity="sha512-v8ng/uGxkge3d1IJuEo6dJP8JViyvms0cly9pnbfRxT6/31c3dRWxIiwGnMSWwZjHKOuY3EVmijs7k1jz/9bLA=="
+    crossorigin="anonymous">
+</script>
+<script>
+    const input = document.querySelector('input');
+    const form = document.querySelector('form');
+    const output = document.querySelector('.output');
+    const answers = document.querySelector('.answers');
+    
+    input.focus();
+
+    form.addEventListener('submit', event => {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const command = formData.get('command');
+
+        if (!command) return;
+
+        fetch('/api/command', {
+            method: 'POST',
+            body: command,
+            headers: {
+                'content-type': 'text/plain',
+                'content-length': command.length.toString()
+            }
+        })
+        .then( res => {
+            if (res.status == 403){
+                document.querySelector('.invalid').style.display = 'block';
+                setTimeout( () => {location.reload()},300);
+            }
+        });
+        input.value = '';
+    });
+
+    const ioAdmin = io('/admin');
+
+    ioAdmin.on('history', history => {
+        history.forEach( message => {
+            addMessage(message);
+        });
+        updateScroll();
+    });
+
+    ioAdmin.on('console', data => {
+        addMessage(data);
+    });
+
+    ioAdmin.on('answers', answerData => {
+        answers.innerHTML = '';
+        for(var user of answerData.users){
+            const answer = document.createElement('DIV');
+            answer.classList.add('message');
+            answer.classList.add('answer');
+            answer.textContent = `${user.name}: ${answerData.answers[user.tryoutsid]}`;
+            answers.appendChild(answer);
+        }
+    });
+
+    function addMessage(data){
+        var autoScroll;
+        if (output.scrollTop == output.scrollHeight-output.clientHeight){
+            autoScroll = true;
+        }
+
+        const message = document.createElement('DIV');
+        message.classList.add('message');
+        message.classList.add('message-'+data.type);
+
+        const time = document.createElement('SPAN');
+        time.classList.add('message-time');
+        time.innerHTML = data.time;
+        message.appendChild(time);
+
+        const text = document.createElement('SPAN');
+        text.innerHTML = data.message;
+        message.appendChild(text)
+
+        output.appendChild(message);
+        if (autoScroll) updateScroll();
+    }
+
+    function updateScroll(){
+        output.scrollTop = output.scrollHeight;
+    }
+</script>
+<script src="tryoutsDisp.js"></script>
+</html>

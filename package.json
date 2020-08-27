@@ -1,0 +1,29 @@
+{
+  "name": "qbtryouts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sunouray/qbtryouts.git"
+  },
+  "author": "sunouray",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sunouray/qbtryouts/issues"
+  },
+  "homepage": "https://github.com/sunouray/qbtryouts#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "google-spreadsheet": "^3.0.13",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}

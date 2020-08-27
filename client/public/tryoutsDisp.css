@@ -1,0 +1,37 @@
+.timer {
+    display: flex;
+    height: 40px;
+    padding: 0;
+}
+.time { margin: 0 10px 0 0; }
+.main-time { font-size: 30px;}
+.deciseconds { font-size: 20px; }
+.loading-bar-background{
+    background-color: #cccccc;
+    height: 20px;
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 15px;
+    padding: 0;
+}
+.loading-bar {
+    background-color: #555555;
+    height: 100%;
+    width: 0%;
+    border-radius:  5px;
+    transition: width 100ms, background-color 100ms;
+    transition-timing-function: linear;
+}
+.question {
+    background-color: #eeeeee;
+    padding: 10px;
+    border-style: solid;
+    border-color: #dddddd;
+    border-radius: 3px;
+    border-width: 1px;
+    margin: 5px 0 30px;
+    text-align: left;
+}
+.noquestion {
+    color: #777777;
+}
