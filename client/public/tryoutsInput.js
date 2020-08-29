@@ -32,6 +32,10 @@ window.addEventListener('question ended', disableAnswer);
 
 socket.on('answer confirmation', showConfirmation);
 
+socket.on('clear history', () => {
+    confirmations.innerHTML = '';
+});
+
 function enableAnswer(){
     answer.disabled = false;
     answer.focus();

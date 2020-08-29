@@ -266,6 +266,12 @@ function handleCommand(command){
             }
             else cancelled = true;
             break;
+        case 'clearHistory':
+        case 'ch':
+            confirmationHistories = {};
+            ioTryouts.emit('clear history');
+            sendAdminMessage('info','cleared confirmation histories');
+            break;
         case 'h':
         case 'help':
             var commands = ['Commands:','ping','status','see (questions or users)',
