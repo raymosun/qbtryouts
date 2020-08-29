@@ -253,7 +253,7 @@ function handleCommand(command){
                 return sendAdminMessage('err', 'must give wait time before start in seconds');
             }
             sendAdminMessage('info', `beginning tryouts in ${args} seconds`);
-            startWaitTime = parseInt(args);
+            startWaitTime = parseInt(args)*1000;
             runTryouts();
             break;
         case 'cancel':
