@@ -7,6 +7,7 @@ const mainTime = document.querySelector('.main-time');
 const deciseconds = document.querySelector('.deciseconds');
 
 var cancelled;
+var questionTime = 8000;
 
 socket.on('restart', () => {
     location.reload();
@@ -17,7 +18,9 @@ socket.on('disconnect', () => {
 });
 
 socket.on('state', async state => {
+    console.log(state);
     status.innerHTML = state.status;
+    questionTime = state.questionTime;
     if (state.status === 'starting soon...'){
         loadingBar.style.backgroundColor = '#555555';
         syncTimer(state.timeElapsed,state.startWaitTime, function(){});
@@ -38,7 +41,7 @@ socket.on('state', async state => {
             break;
         case 'done':
             loadingBar.style.backgroundColor = "#1abd40";
-            syncTimer(state.timeElapsed,5000, () => {
+            syncTimer(state.timeElapsed,questionTime, () => {
                 question.innerHTML = '<span class="noquestion"><em>question</em></span>';
                 window.dispatchEvent(questionEnded);
             });
@@ -60,6 +63,10 @@ socket.on('prep', () => {
     updateTimer(3000, function(){},true)
 });
 
+socket.on('questionTime', time => {
+    questionTime = time;
+});
+
 socket.on('questionBegin', () => {
     question.innerHTML = '&#8203';
     loadingBar.style.backgroundColor = "#1abd40";
@@ -70,7 +77,7 @@ socket.on('questionWord', word => {
 });
 
 socket.on('questionDone', () => {
-    updateTimer(5000, () => {
+    updateTimer(questionTime, () => {
         question.innerHTML = '<span class="noquestion"><em>question</em></span>';
         window.dispatchEvent(questionEnded);
     });

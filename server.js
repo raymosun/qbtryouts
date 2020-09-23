@@ -24,6 +24,7 @@ var sentQuestionWords = [];
 var confirmationHistories = {};
 var startWaitTime;
 var cancelled;
+var questionTime = 8000;
 
 // load sheets info
 sheets.initSheets()
@@ -129,7 +130,8 @@ ioTryouts.on('connection', (socket) => {
         sentQuestionWords: sentQuestionWords,
         answer: answers[sess.tryoutsid],
         confirmationHistory: confirmationHistories[sess.tryoutsid],
-        startWaitTime: startWaitTime
+        startWaitTime: startWaitTime,
+        questionTime: questionTime
     });
 
     socket.on('answer', answer => {
@@ -294,6 +296,9 @@ async function askQuestion(questionIndex){
     timeBegin = Date.now();
     await sleep(3200);
 
+    if (question.includes('###')) questionTime = 16000;
+    else questionTime = 8000;
+    ioTryouts.emit('questionTime',questionTime);
     ioTryouts.emit('questionBegin');
     sentQuestionWords = [];
     questionState = 'asking';
@@ -301,12 +306,12 @@ async function askQuestion(questionIndex){
     updateConsoleAnswers();
     await sleep(100);
 
-    words = question.split(' ');
+    words = question.replace(/^###/, '').split(' ');
     while (words.length > 0) {
         word = words.shift();
         ioTryouts.emit('questionWord',word);
         sentQuestionWords.push(word);
-        await sleep(200);
+        await sleep(300);
     }
 
     ioTryouts.emit('questionDone');
@@ -314,7 +319,7 @@ async function askQuestion(questionIndex){
     questionState = 'done';
 
     // send confirmations of answers and log them
-    await sleep(5500);
+    await sleep(questionTime+500);
     for(var tryoutsid in answers){
         if (!confirmationHistories[tryoutsid]){
             confirmationHistories[tryoutsid] = [];
