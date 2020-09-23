@@ -277,7 +277,7 @@ function handleCommand(command){
         case 'h':
         case 'help':
             var commands = ['Commands:','ping','status','see (questions or users)',
-                            'ask','update','restart','begin','cancel','help']
+                            'ask','update','restart','begin','cancel','clearHistory','help']
             sendAdminMessage('info',commands.join('<br>'));
             break;
         default:
