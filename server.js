@@ -307,8 +307,12 @@ async function askQuestion(questionIndex){
     await sleep(100);
 
     words = question.replace(/^###/, '').split(' ');
+    var italics = false;
     while (words.length > 0) {
         word = words.shift();
+        if (italics) word = '<em>' + word;
+        if (word.includes('<em>')) italics = true;
+        if (word.includes('</em>')) italics = false;
         ioTryouts.emit('questionWord',word);
         sentQuestionWords.push(word);
         await sleep(300);
