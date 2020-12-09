@@ -60,3 +60,5 @@ function showConfirmation(confirmation){
     message.append(ending);
     confirmations.prepend(message);
 }
+
+setInterval(fetch, 1000*60*20, '/');
