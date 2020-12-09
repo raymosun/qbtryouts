@@ -18,7 +18,6 @@ socket.on('disconnect', () => {
 });
 
 socket.on('state', async state => {
-    console.log(state);
     status.innerHTML = state.status;
     questionTime = state.questionTime;
     if (state.status === 'starting soon...'){
